@@ -24,8 +24,8 @@ export class CartPage {
 
   ionViewDidLoad() {
     let cart = this.cartService.getCart()
-    this.items = cart.items;
-    this.loadImageUrls();
+    this.items = cart.items
+    this.loadImageUrls()
   }
 
   loadImageUrls() {
@@ -35,7 +35,7 @@ export class CartPage {
         .subscribe(response => {
           item.product.imageUrl = `${API_CONFIG.bucketBaseUrl}/prod${item.product.id}-small.jpg`
         },
-        error => {});
+        error => {})
     }
   }  
   
@@ -57,5 +57,9 @@ export class CartPage {
 
   goOn() {
     this.navCtrl.setRoot('CategoriesPage')
+  }
+  
+  checkout() {
+    this.navCtrl.push('PickAddressPage')
   }
 }
