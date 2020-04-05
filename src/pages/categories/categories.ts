@@ -31,12 +31,12 @@ export class CategoriesPage {
   ionViewDidLoad() {
     this.categoryService.findAll()
       .subscribe(response => {
-        this.items = response;
+        this.items = response
       },
-      error => {});
+      error => {})
   }
 
-  showProducts() {
-    this.navCtrl.push('ProductsPage');    
+  showProducts(category_id : string) {
+    this.navCtrl.push('ProductsPage', {category_id: category_id})    
   }
 }
