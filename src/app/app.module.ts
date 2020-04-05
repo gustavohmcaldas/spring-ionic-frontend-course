@@ -16,6 +16,7 @@ import { AuthInterceptorProvider } from '../interceptors/auth-interceptor';
 import { StateService } from '../services/domain/state.service';
 import { CityService } from '../services/domain/city.service';
 import { ProductService } from '../services/domain/product.service';
+import { CartService } from '../services/domain/cart.service';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { ProductService } from '../services/domain/product.service';
     ClientService,
     CityService,
     StateService,
-    ProductService
+    ProductService,
+    CartService
   ]
 })
 export class AppModule {}
