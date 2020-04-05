@@ -32,9 +32,9 @@
 
     <ion-item>
       <ion-label stacked>CPF or CNPJ</ion-label>
-      <ion-input formControlName="cpfOrCnpj" type="text"></ion-input>
+      <ion-input formControlName="cpfCnpj" type="text"></ion-input>
     </ion-item>
-    <p class="danger" *ngIf="formGroup.controls.cpfOrCnpj.dirty && formGroup.controls.cpfOrCnpj.errors" margin-left>Invalid value</p>
+    <p class="danger" *ngIf="formGroup.controls.cpfCnpj.dirty && formGroup.controls.cpfCnpj.errors" margin-left>Invalid value</p>
     <ion-item>
       <ion-label stacked>Password*</ion-label>
       <ion-input formControlName="password" type="password"></ion-input>
