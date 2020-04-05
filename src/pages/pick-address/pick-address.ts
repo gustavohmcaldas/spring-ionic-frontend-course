@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AddressDTO } from '../../models/address.dto';
+import { StorageService } from '../../services/storage.service';
+import { ClientService } from '../../services/domain/client.service';
 
 @IonicPage()
 @Component({
@@ -11,44 +13,29 @@ export class PickAddressPage {
 
   items: AddressDTO[];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams,
+    public storage: StorageService,
+    public clienteService: ClientService) {
   }
 
   ionViewDidLoad() {
-    this.items = [
-      {
-        id: "1",
-        streetAddress: "Rua Quinze de Novembro",
-        number: "300",
-        complement: "Apto 200",
-        district: "Santa Mônica",
-        zipCode: "48293822",
-        city: {
-          id: "1",
-          name: "Uberlândia",
-          state: {
-            id: "1",
-            name: "Minas Gerais"
+    let localUser = this.storage.getLocalUser();
+    if (localUser && localUser.email) {
+      this.clienteService.findByEmail(localUser.email)
+        .subscribe(response => {
+          this.items = response['address'];
+        },
+        error => {
+          if (error.status == 403) {
+            this.navCtrl.setRoot('HomePage');
           }
-        }
-      },
-      {
-        id: "2",
-        streetAddress: "Rua Alexandre Toledo da Silva",
-        number: "405",
-        complement: null,
-        district: "Centro",
-        zipCode: "88933822",
-        city: {
-          id: "3",
-          name: "São Paulo",
-          state: {
-            id: "2",
-            name: "São Paulo"
-          }
-        }
+        });
       }
-    ]
+      else {
+        this.navCtrl.setRoot('HomePage');
+      }
   }
 
 }
