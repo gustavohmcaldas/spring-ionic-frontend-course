@@ -3,71 +3,89 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
+    <ion-title *ngIf="orderNumber">Order registered</ion-title>
     <ion-title>Check your order</ion-title>
+
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
 
-  <ion-card>
-    <ion-card-header>
-      Order items
-    </ion-card-header>
-
-    <ion-list>
-      <ion-item *ngFor="let item of cartItems">
-        <ion-thumbnail item-start>
-          <img [src]="item.product.imageUrl || 'assets/imgs/prod.jpg'">
-        </ion-thumbnail>
-        <h2>{{item.product.name}}</h2>
-        <p>{{item.product.price | currency}}</p>
-        <p class="nolinebreak">{{item.quantity}}</p>
-        <p item-end>{{item.product.price * item.quantity | currency}}</p>
-      </ion-item> 
-
-      <ion-item>
-        <h2>Total</h2>
-        <h2 item-end>{{total() | currency}}</h2>
-      </ion-item>
-    </ion-list> 
-  </ion-card>
-
-  <ion-card>
+  <div *ngIf="!orderNumber">
+    <ion-card>
       <ion-card-header>
-        Client
+        Order Items
+      </ion-card-header>
+
+      <ion-list>
+        <ion-item *ngFor="let item of cartItems">
+          <ion-thumbnail item-start>
+            <img [src]="item.product.imageUrl || 'assets/imgs/prod.jpg'">
+          </ion-thumbnail>
+          <h2>{{item.product.name}}</h2>
+          <p>{{item.product.price | currency}}</p>
+          <p class="nolinebreak">{{item.quantity}}</p>
+          <p item-end>{{item.product.price * item.quantity | currency}}</p>
+        </ion-item> 
+
+        <ion-item>
+          <h2>Total</h2>
+          <h2 item-end>{{total() | currency}}</h2>
+        </ion-item>
+      </ion-list> 
+    </ion-card>
+
+    <ion-card>
+        <ion-card-header>
+          Client
+        </ion-card-header>
+        <ion-item>
+          <h2>{{client?.name}}</h2>
+          <p>{{client?.email}}</p>
+        </ion-item>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        Delivery Address
       </ion-card-header>
       <ion-item>
-        <h2>{{client?.name}}</h2>
-        <p>{{client?.email}}</p>
+        <h2>{{address?.streetAddress}}, {{address?.number}}</h2>
+        <p>{{address?.complement}} {{address?.district}} CEP {{address?.zipCode}}</p>
+        <p>{{address?.city.name}}, {{address?.city.state.name}}</p>
       </ion-item>
-  </ion-card>
+    </ion-card>
 
-  <ion-card>
-    <ion-card-header>
-      Delivery Address
-    </ion-card-header>
+    <ion-card>
+      <ion-card-header>
+        Payment
+      </ion-card-header>
 
-    <ion-item>
-      <h2>{{address?.streetAddress}}, {{address?.number}}</h2>
-      <p>{{address?.complement}} {{address?.district}} ZIP Code {{address?.zipCode}}</p>
-      <p>{{address?.city.name}}, {{address?.city.state.name}}</p>
-    </ion-item>
-  </ion-card>
+      <ion-item *ngIf="order.payment['@type']=='paymentWithCard'">
+        <h3>Payment with card</h3>
+        <p>Installments: {{order.payment.numberOfInstallments}}</p>
+      </ion-item>
+      <ion-item *ngIf="order.payment['@type']=='paymentWithBoleto'">
+        <h3>Payment with bank slip</h3>
+      </ion-item>
+    </ion-card>
 
-  <ion-card>
-    <ion-card-header>
-      Payment
-    </ion-card-header>
+    <button ion-button block (click)="checkout()">Confirm</button>
+    <button ion-button block outline (click)="back()">Back</button>
+  </div>
 
-    <ion-item *ngIf="order.payment['@type']=='paymentWithCard'">
-      <h3>Payment with card</h3>
-      <p>Installments: {{order.payment.numberOfInstallments}}</p>
-    </ion-item>
-    <ion-item *ngIf="order.payment['@type']=='paymentWithBoleto'">
-      <h3>Payment with bank slip</h3>
-    </ion-item>
-  </ion-card>
-  
-  <button ion-button block (click)="checkout()">Confirm</button>
-  <button ion-button block outline (click)="back()">Back</button>
+  <div *ngIf="orderNumber">
+    <ion-card>
+        <ion-card-header>
+          Your Order has been registered!
+        </ion-card-header>
+        <ion-item>
+          <h2>Order number: {{orderNumber}}</h2>
+          <p>Check your email</p>
+        </ion-item>
+    </ion-card>
+
+    <button ion-button block outline (click)="home()">Back</button>
+  </div>
+
 </ion-content>
