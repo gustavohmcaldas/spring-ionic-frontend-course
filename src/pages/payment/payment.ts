@@ -23,8 +23,6 @@ export class PaymentPage {
 
     this.order = this.navParams.get('order');
 
-    console.log(this.order)
-
     this.formGroup = this.formBuilder.group({
       numberOfInstallments: [1, Validators.required],
       "@type": ["paymentWithCard", Validators.required]
